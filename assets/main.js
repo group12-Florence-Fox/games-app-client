@@ -13,4 +13,16 @@ $(document).ready(function(){
     $("#logout-button").on("click", function () {
         logout()
     });
+
+    $("#trivia-btn").on("click", function () {
+        trivia()
+    });
+
+    $("#gotd-btn").on("click", function () {
+        gotd()
+    });
+
+    $("#jokes-btn").on("click", function () {
+        jokes()
+    });
 }); 
