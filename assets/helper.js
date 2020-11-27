@@ -103,6 +103,7 @@ function gotd() {
         Description
     </div>
     </div>`)
+    fetchIgdbAPI()
     showGotd()
     $("#trivia-list").empty()
     $("#jokes-content").empty()
@@ -218,6 +219,7 @@ function fetchTrivia() {
 
 function fetchIgdbAPI() {
     // $('#main-page').empty()
+    console.log('tes');
     $.ajax({
             url: 'http://localhost:3000/igdbAPI',
             method: 'POST',
@@ -229,21 +231,21 @@ function fetchIgdbAPI() {
             console.log(response);
             $('#table-head').append(` 
             <tr>
-            <th scope="col">#</th>
-            <th scope="col">Name</th>
-            <th scope="col">Year</th>
-            <th scope="col">Cover url</th>
-            <th scope="col">Game url</th>
+            <th scope="col" class="text-center">#</th>
+            <th scope="col" class="text-center">Name</th>
+            <th scope="col" class="text-center"> Released Year</th>
+            <th scope="col" class="text-center">Cover</th>
+            <th scope="col" class="text-center">Details</th>
             </tr>`)
-            response.forEach(element => {
+            response.forEach((element, i) => {
                 $('#table-body').append(` 
                 <tr>
-                     <th scope="row">1</th>
+                     <th scope="row" class="text-center">${i+1}</th>
                      <td>${element.name}</td>
-                     <td>${element.release_dates[0].y}</td>
-                     <td>${element.cover ? element.cover.url.slice(2) : 'cek'}</td>
-                     <td>${element.url}</td>
-                </tr>`);
+                     <td class="text-center">${element.release_dates ? element.release_dates[0].y: '-'}</td>
+                     <td><img src="https://${element.cover ? element.cover.url.slice(2) : '-'}" alt="${element.name}" border=3 height=60 width=60></img></td>
+                     <td class="text-center"><a href="${element.url}" class="btn btn-outline-primary" role="button" aria-pressed="true" target="_blank">Visit Game</a></td>
+                </tr>`)
                  
             });
             })
@@ -251,5 +253,3 @@ function fetchIgdbAPI() {
             console.log(xhr);
         })
 }
-
-
