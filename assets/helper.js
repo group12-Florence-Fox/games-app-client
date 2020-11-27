@@ -30,6 +30,7 @@ function showGotd() {
     $("#trivia-list").hide()
     $("#gotd-content").show()
     $("#jokes-content").hide()
+    console.log('show gotd');
 }
 
 function showJokes() {
@@ -54,7 +55,7 @@ function login() {
         }
     })
         .done(response => {
-            console.log(response.access_token);
+            // console.log(response.access_token);
             localStorage.setItem('access_token', response.access_token)
             showMainPage()
         })
@@ -96,18 +97,9 @@ function logout() {
 }
 
 function gotd() {
-    $("#gotd-content").append(`<div class="media">
-    <img src="..." class="mr-3" alt="...">
-    <div class="media-body">
-        <h5 class="mt-0">Judul Film</h5>
-        Description
-    </div>
-    </div>`)
-    fetchIgdbAPI()
     showGotd()
-    $("#trivia-list").empty()
-    $("#jokes-content").empty()
-
+    console.log('cek');
+    fetchIgdbAPI()
 }
 
 function jokes() {
@@ -164,7 +156,9 @@ function fetchTrivia() {
     $.ajax({
         url: "http://localhost:3000/triviaAPI",
         method: "GET",
-
+        headers: {
+            access_token: localStorage.getItem("access_token")
+        }
     })
     .done(response => {
         showTrivia()
@@ -218,7 +212,7 @@ function fetchTrivia() {
 }
 
 function fetchIgdbAPI() {
-    // $('#main-page').empty()
+    // $('#gotd-content').empty()
     console.log('tes');
     $.ajax({
             url: 'http://localhost:3000/igdbAPI',
@@ -228,6 +222,9 @@ function fetchIgdbAPI() {
             }
         })
         .done(response => {
+            $('#table-head').empty()
+            $('#table-body').empty()
+            showGotd()
             console.log(response);
             $('#table-head').append(` 
             <tr>
@@ -238,6 +235,7 @@ function fetchIgdbAPI() {
             <th scope="col" class="text-center">Details</th>
             </tr>`)
             response.forEach((element, i) => {
+                console.log(element);
                 $('#table-body').append(` 
                 <tr>
                      <th scope="row" class="text-center">${i+1}</th>
@@ -245,11 +243,14 @@ function fetchIgdbAPI() {
                      <td class="text-center">${element.release_dates ? element.release_dates[0].y: '-'}</td>
                      <td><img src="https://${element.cover ? element.cover.url.slice(2) : '-'}" alt="${element.name}" border=3 height=60 width=60></img></td>
                      <td class="text-center"><a href="${element.url}" class="btn btn-outline-primary" role="button" aria-pressed="true" target="_blank">Visit Game</a></td>
-                </tr>`)
-                 
+                </tr>
+                `)
             });
+            $("#trivia-list").empty()
+            $("#jokes-content").empty()
             })
         .fail((xhr, textStatus) => {
             console.log(xhr);
         })
+
 }

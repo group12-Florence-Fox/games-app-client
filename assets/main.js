@@ -20,6 +20,7 @@ $(document).ready(function(){
 
     $("#gotd-btn").on("click", function () {
         gotd()
+        // fetchIgdbAPI()
     });
 
     $("#jokes-btn").on("click", function () {
