@@ -1,67 +1,14 @@
 function showMainPage() {
     $('#login-form').hide()
     $('#main-page').show()
-    $('#btn-logout').show()
+    $('#logout-button').show()
 }
 
-function showLogIn() {
+function showLoginPage() {
     $('#login-form').show()
     $('#main-page').hide()
-    $('#btn-logout').show()
+    $('#logout-button').show()
 }
-
-function login(){
-    const email = $('#email-login').val()
-    const password = $('#password-login').val()
-    $.ajax({
-            url: "http://localhost:3000/login",
-            method: "POST",
-            data: {
-                email,
-                password
-            }
-        })
-        .done(response => {
-            localStorage.setItem('access_token', response.access_token);
-            showMainPage()
-        })
-        .fail((xhr, textStatus) => {
-            console.log(xhr);
-        })
-        .always(() => {
-            $('#email-login').val('')
-            $('#password-login').val('')
-        })
-}
-
-function logout(){
-    localStorage.clear()
-    showLogIn()
-    // var auth2 = gapi.auth2.getAuthInstance();
-    // auth2.signOut().then(function () {
-    //   console.log('User signed out.');
-    // });
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 function fetchJokesAPI() {
     // $('#').empty()
@@ -99,6 +46,7 @@ function fetchTriviaAPI() {
 
 function fetchIgdbAPI() {
     // $('#main-page').empty()
+    console.log('tes');
     $.ajax({
             url: 'http://localhost:3000/igdbAPI',
             method: 'POST',
@@ -110,36 +58,81 @@ function fetchIgdbAPI() {
             console.log(response);
             $('#table-head').append(` 
             <tr>
-            <th scope="col">#</th>
-            <th scope="col">Name</th>
-            <th scope="col">Year</th>
-            <th scope="col">Cover url</th>
-            <th scope="col">Game url</th>
+            <th scope="col" class="text-center">#</th>
+            <th scope="col" class="text-center">Name</th>
+            <th scope="col" class="text-center"> Released Year</th>
+            <th scope="col" class="text-center">Cover</th>
+            <th scope="col" class="text-center">Details</th>
             </tr>`)
-            response.forEach(element => {
+            response.forEach((element, i) => {
                 $('#table-body').append(` 
                 <tr>
-                     <th scope="row">1</th>
+                     <th scope="row" class="text-center">${i+1}</th>
                      <td>${element.name}</td>
-                     <td>${element.release_dates[0].y}</td>
-                     <td>${element.cover ? element.cover.url.slice(2) : 'cek'}</td>
-                     <td>${element.url}</td>
-                </tr>`);
+                     <td class="text-center">${element.release_dates ? element.release_dates[0].y: '-'}</td>
+                     <td><img src="https://${element.cover ? element.cover.url.slice(2) : '-'}" alt="${element.name}" border=3 height=60 width=60></img></td>
+                     <td class="text-center"><a href="${element.url}" class="btn btn-outline-primary" role="button" aria-pressed="true" target="_blank">Visit Game</a></td>
+                </tr>`)
                  
             });
-            // response.forEach((el, i) => {
-            //     $('#table-body').append(` <tr>
-            //     <th scope="row">${i+1}</th>
-            //     <td>${el.name}</td>
-            //     <td>${el.release_dates[0].y}</td>
-            //     <td>${el.cover.url.slice(2)}</td>
-            //     <td>${el.url}</td>
-            //      </tr>`);
-            // })
-
-
             })
         .fail((xhr, textStatus) => {
             console.log(xhr);
         })
 }
+
+function login() {
+    const email = $("#email-login").val()
+    const password = $("#password-login").val()
+
+    $.ajax({
+        url: 'http://localhost:3000/login',
+        method: 'POST',
+        data: {
+            email,
+            password
+        }
+    })
+        .done(response =>{
+            // console.log(response.access_token);
+            localStorage.setItem('access_token', response.access_token)
+            showMainPage()
+        })
+        .fail((xhr, textStatus)=>{
+            console.log(xhr.responseJSON, textStatus);
+        })
+        .always(_=> {
+            $("#email-login").val("")
+            $("#password-login").val("")
+        })
+}
+
+function onSignIn(googleUser) {
+    const googleToken = googleUser.getAuthResponse().id_token;
+    $.ajax({
+        url: 'http://localhost:3000/googlelogin',
+        method: 'POST',
+        data: {
+            googleToken
+        }
+    })
+        .done(response => {
+            // console.log(response.access_token);
+            localStorage.setItem('access_token', response.access_token)
+            showMainPage()
+        })
+        .fail(err => {
+            console.log(err);
+        })
+}
+
+function logout() {
+    localStorage.clear()
+    var auth2 = gapi.auth2.getAuthInstance();
+    showLoginPage()
+    auth2.signOut().then(function () {
+        console.log('User signed out.');
+    });
+}
+
+
