@@ -1,12 +1,44 @@
 function showLoginPage() {
     $("#login-form").show()
     $("#logout-button").hide()
+    $("#trivia-list").hide()
+    $("#gotd-content").hide()
+    $("#jokes-content").hide()
+    $("#menu-button").hide()
 }
 
 function showMainPage() {
     $("#login-form").hide()
     $("#logout-button").show()
-    fetchTrivia()
+    $("#trivia-list").hide()
+    $("#gotd-content").hide()
+    $("#jokes-content").hide()
+    $("#menu-button").show()
+}
+
+function showTrivia() {
+    $("#login-form").hide()
+    $("#logout-button").show()
+    $("#trivia-list").show()
+    $("#gotd-content").hide()
+    $("#jokes-content").hide()
+}
+
+function showGotd() {
+    $("#login-form").hide()
+    $("#logout-button").show()
+    $("#trivia-list").hide()
+    $("#gotd-content").show()
+    $("#jokes-content").hide()
+}
+
+function showJokes() {
+    $("#login-form").hide()
+    $("#logout-button").show()
+    $("#trivia-list").hide()
+    $("#gotd-content").hide()
+    $("#jokes-content").show()
+    
 }
 
 function login() {
@@ -21,15 +53,15 @@ function login() {
             password
         }
     })
-        .done(response =>{
+        .done(response => {
             console.log(response.access_token);
             localStorage.setItem('access_token', response.access_token)
             showMainPage()
         })
-        .fail((xhr, textStatus)=>{
+        .fail((xhr, textStatus) => {
             console.log(xhr.responseJSON, textStatus);
         })
-        .always(_=> {
+        .always(_ => {
             $("#email-login").val("")
             $("#password-login").val("")
         })
@@ -63,6 +95,53 @@ function logout() {
     });
 }
 
+function gotd() {
+    $("#gotd-content").append(`<div class="media">
+    <img src="..." class="mr-3" alt="...">
+    <div class="media-body">
+        <h5 class="mt-0">Judul Film</h5>
+        Description
+    </div>
+    </div>`)
+    showGotd()
+    $("#trivia-list").empty()
+    $("#jokes-content").empty()
+
+}
+
+function jokes() {
+    $("#jokes-content").empty()
+    $.ajax({
+        method: "GET",
+        url: "http://localhost:3000/jokesAPI",
+        headers: {
+            access_token: localStorage.getItem("access_token")
+        }
+    })
+        .done(response => {
+            let jokes
+            if (!response.joke) {
+                jokes = '<h1>You arent Lucky :( <br> Try Again!</h1>'
+            } else {
+                jokes = response.joke
+            }
+            $("#jokes-content").append(`<div class="card">
+            <div class="card-header">
+              Jokes
+            </div>
+            <div class="card-body">
+              <blockquote class="blockquote mb-0">
+                <p>${jokes}</p>
+                <footer class="blockquote-footer">Someone <cite title="Source Title">Jokes</cite></footer>
+              </blockquote>
+            </div>
+          </div>`)
+            showJokes()
+            $("#trivia-list").empty()
+            $("#gotd-content").empty()
+        })
+}
+
 function btnAnswer(options, answer) {
     if (options === answer) {
         Swal.fire(
@@ -80,13 +159,14 @@ function btnAnswer(options, answer) {
 }
 
 function fetchTrivia() {
+    $("#trivia-list").empty()
     $.ajax({
         url: "http://localhost:3000/triviaAPI",
         method: "GET",
 
     })
     .done(response => {
-
+        showTrivia()
         const random = Math.floor(Math.random() * response.length) 
         while(response[random].type == 'boolean') {
             const random = Math.floor(Math.random() * response.length) 
@@ -109,11 +189,25 @@ function fetchTrivia() {
             option4 = Math.floor(Math.random() * temp.length)
         }
 
-            $('#trivia-list').append(`<h1>${response[random].question}</h1>
-            <div class="btn"><button class="answer" onclick="btnAnswer('${temp[option1]}', '${temp[3]}')">${temp[option1]}</button></div>
-            <div class="btn"><button class="answer" onclick="btnAnswer('${temp[option2]}', '${temp[3]}')">${temp[option2]}</button></div>
-            <div class="btn"><button class="answer" onclick="btnAnswer('${temp[option3]}', '${temp[3]}')">${temp[option3]}</button></div>
-            <div class="btn"><button class="answer" onclick="btnAnswer('${temp[option4]}', '${temp[3]}')">${temp[option4]}</button></div>`)
+            $('#trivia-list').append(`<div class="card">
+            <div class="card-header">
+              Trivia
+            </div>
+            <div class="card-body">
+              <blockquote class="blockquote mb-0">
+              <h3>${response[random].question}</h3>
+              <div class="text-center mt-5"><div class="btn"><button class="answer btn btn-outline-primary" onclick="btnAnswer('${temp[option1]}', '${temp[3]}')">${temp[option1]}</button></div>
+              <div class="btn"><button class="answer btn btn-outline-primary" onclick="btnAnswer('${temp[option2]}', '${temp[3]}')">${temp[option2]}</button></div>
+              <div class="btn"><button class="answer btn btn-outline-primary" onclick="btnAnswer('${temp[option3]}', '${temp[3]}')">${temp[option3]}</button></div>
+              <div class="btn"><button class="answer btn btn-outline-primary" onclick="btnAnswer('${temp[option4]}', '${temp[3]}')">${temp[option4]}</button></div></div>
+              </blockquote>
+            </div>
+          </div>
+            `)
+
+
+            $("#jokes-content").empty()
+            $("#gotd-content").empty()
 
     })
     .fail((xhr, textStatus) => {

@@ -20,7 +20,7 @@
             <img src="/assets/img/game.png" width="30" height="30" class="d-inline-block align-top" alt="">
             Games App
         </a>
-        <button type="button" class="btn btn-outline-dark" id="logout-button">Logout</button>
+        <button type="button" class="btn btn-outline-primary" id="logout-button">Logout</button>
     </nav>
 
     <!-- Form Login -->
@@ -38,11 +38,37 @@
         <button type="submit" class="btn btn-primary">Login</button>
         <div class="g-signin2 mt-3" data-onsuccess="onSignIn"></div>
     </form>
-    
-    <!-- trivia API -->
-    <div id="trivia-list">
-        
+
+    <!-- Main Page -->
+    <div class="text-center mb-5" id="menu-button">
+        <h1>Welcome to Games-App</h1>
+        <p>Please Select Your Fun Things!</p>
+        <div class="btn-group btn-group-justified col-5">
+            <a href="#" class="btn btn-primary" id="trivia-btn">Trivia</a>
+            <a href="#" class="btn btn-primary" id="gotd-btn">Games Of The Day</a>
+            <a href="#" class="btn btn-primary" id="jokes-btn">Jokes</a>
+        </div>
     </div>
+
+    <!-- Trivia Content -->
+    <div class="container center_form trivia-layout">
+        <div class="row" id="trivia-list">
+        </div>
+    </div>
+
+    <!-- Games Of The Day Content -->
+    <div class="container center_form gotd-layout">
+        <div class="row" id="gotd-content">
+            
+        </div>
+    </div>
+
+    <!-- Jokes Content -->
+    <div class="container center_form jokes-layout">
+        <div class="row" id="jokes-content">
+        </div>
+    </div>
+
       
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script src="https://apis.google.com/js/platform.js" async defer></script>
