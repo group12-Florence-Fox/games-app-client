@@ -1,6 +1,7 @@
 $(document).ready(function(){
     if (localStorage.getItem('access_token')) {
         showMainPage()
+        fetchIgdbAPI()
     } else {
         showLoginPage()
     }

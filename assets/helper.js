@@ -216,3 +216,40 @@ function fetchTrivia() {
     
 }
 
+function fetchIgdbAPI() {
+    // $('#main-page').empty()
+    $.ajax({
+            url: 'http://localhost:3000/igdbAPI',
+            method: 'POST',
+            headers: {
+                access_token: localStorage.getItem('access_token')
+            }
+        })
+        .done(response => {
+            console.log(response);
+            $('#table-head').append(` 
+            <tr>
+            <th scope="col">#</th>
+            <th scope="col">Name</th>
+            <th scope="col">Year</th>
+            <th scope="col">Cover url</th>
+            <th scope="col">Game url</th>
+            </tr>`)
+            response.forEach(element => {
+                $('#table-body').append(` 
+                <tr>
+                     <th scope="row">1</th>
+                     <td>${element.name}</td>
+                     <td>${element.release_dates[0].y}</td>
+                     <td>${element.cover ? element.cover.url.slice(2) : 'cek'}</td>
+                     <td>${element.url}</td>
+                </tr>`);
+                 
+            });
+            })
+        .fail((xhr, textStatus) => {
+            console.log(xhr);
+        })
+}
+
+
