@@ -2,11 +2,6 @@ $(document).ready(function(){
     if (localStorage.getItem('access_token')) {
         showMainPage()
         fetchIgdbAPI()
-<<<<<<< HEAD
-=======
-        // fetchJokesAPI()
-        // fetchTriviaAPI()
->>>>>>> 4e0a55ee0edf149954913e59efd649fc4c2ca875
     } else {
         showLoginPage()
     }
@@ -19,7 +14,6 @@ $(document).ready(function(){
     $("#logout-button").on("click", function () {
         logout()
     });
-<<<<<<< HEAD
 
     $("#trivia-btn").on("click", function () {
         fetchTrivia()
@@ -33,6 +27,3 @@ $(document).ready(function(){
         jokes()
     });
 }); 
-=======
-}); 
->>>>>>> 4e0a55ee0edf149954913e59efd649fc4c2ca875
