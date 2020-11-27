@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 function showLoginPage() {
     $("#login-form").show()
     $("#logout-button").hide()
@@ -40,89 +39,6 @@ function showJokes() {
     $("#gotd-content").hide()
     $("#jokes-content").show()
     
-=======
-function showMainPage() {
-    $('#login-form').hide()
-    $('#main-page').show()
-    $('#logout-button').show()
-}
-
-function showLoginPage() {
-    $('#login-form').show()
-    $('#main-page').hide()
-    $('#logout-button').show()
-}
-
-function fetchJokesAPI() {
-    // $('#').empty()
-    $.ajax({
-            url: 'http://localhost:3000/jokesAPI',
-            method: 'GET',
-            headers: {
-                access_token: localStorage.getItem('access_token')
-            }
-        })
-        .done(response => {
-            console.log(response);
-            })
-        .fail((xhr, textStatus) => {
-            console.log(xhr);
-        })
-}
-
-function fetchTriviaAPI() {
-    // $('#').empty()
-    $.ajax({
-            url: 'http://localhost:3000/triviaAPI',
-            method: 'GET',
-            headers: {
-                access_token: localStorage.getItem('access_token')
-            }
-        })
-        .done(response => {
-            console.log(response);
-            })
-        .fail((xhr, textStatus) => {
-            console.log(xhr);
-        })
-}
-
-function fetchIgdbAPI() {
-    // $('#main-page').empty()
-    console.log('tes');
-    $.ajax({
-            url: 'http://localhost:3000/igdbAPI',
-            method: 'POST',
-            headers: {
-                access_token: localStorage.getItem('access_token')
-            }
-        })
-        .done(response => {
-            console.log(response);
-            $('#table-head').append(` 
-            <tr>
-            <th scope="col" class="text-center">#</th>
-            <th scope="col" class="text-center">Name</th>
-            <th scope="col" class="text-center"> Released Year</th>
-            <th scope="col" class="text-center">Cover</th>
-            <th scope="col" class="text-center">Details</th>
-            </tr>`)
-            response.forEach((element, i) => {
-                $('#table-body').append(` 
-                <tr>
-                     <th scope="row" class="text-center">${i+1}</th>
-                     <td>${element.name}</td>
-                     <td class="text-center">${element.release_dates ? element.release_dates[0].y: '-'}</td>
-                     <td><img src="https://${element.cover ? element.cover.url.slice(2) : '-'}" alt="${element.name}" border=3 height=60 width=60></img></td>
-                     <td class="text-center"><a href="${element.url}" class="btn btn-outline-primary" role="button" aria-pressed="true" target="_blank">Visit Game</a></td>
-                </tr>`)
-                 
-            });
-            })
-        .fail((xhr, textStatus) => {
-            console.log(xhr);
-        })
->>>>>>> 4e0a55ee0edf149954913e59efd649fc4c2ca875
 }
 
 function login() {
@@ -137,7 +53,6 @@ function login() {
             password
         }
     })
-<<<<<<< HEAD
         .done(response => {
             console.log(response.access_token);
             localStorage.setItem('access_token', response.access_token)
@@ -147,17 +62,6 @@ function login() {
             console.log(xhr.responseJSON, textStatus);
         })
         .always(_ => {
-=======
-        .done(response =>{
-            // console.log(response.access_token);
-            localStorage.setItem('access_token', response.access_token)
-            showMainPage()
-        })
-        .fail((xhr, textStatus)=>{
-            console.log(xhr.responseJSON, textStatus);
-        })
-        .always(_=> {
->>>>>>> 4e0a55ee0edf149954913e59efd649fc4c2ca875
             $("#email-login").val("")
             $("#password-login").val("")
         })
@@ -173,11 +77,7 @@ function onSignIn(googleUser) {
         }
     })
         .done(response => {
-<<<<<<< HEAD
             console.log(response.access_token);
-=======
-            // console.log(response.access_token);
->>>>>>> 4e0a55ee0edf149954913e59efd649fc4c2ca875
             localStorage.setItem('access_token', response.access_token)
             showMainPage()
         })
@@ -195,7 +95,6 @@ function logout() {
     });
 }
 
-<<<<<<< HEAD
 function gotd() {
     $("#gotd-content").append(`<div class="media">
     <img src="..." class="mr-3" alt="...">
@@ -204,6 +103,7 @@ function gotd() {
         Description
     </div>
     </div>`)
+    fetchIgdbAPI()
     showGotd()
     $("#trivia-list").empty()
     $("#jokes-content").empty()
@@ -319,6 +219,7 @@ function fetchTrivia() {
 
 function fetchIgdbAPI() {
     // $('#main-page').empty()
+    console.log('tes');
     $.ajax({
             url: 'http://localhost:3000/igdbAPI',
             method: 'POST',
@@ -330,21 +231,21 @@ function fetchIgdbAPI() {
             console.log(response);
             $('#table-head').append(` 
             <tr>
-            <th scope="col">#</th>
-            <th scope="col">Name</th>
-            <th scope="col">Year</th>
-            <th scope="col">Cover url</th>
-            <th scope="col">Game url</th>
+            <th scope="col" class="text-center">#</th>
+            <th scope="col" class="text-center">Name</th>
+            <th scope="col" class="text-center"> Released Year</th>
+            <th scope="col" class="text-center">Cover</th>
+            <th scope="col" class="text-center">Details</th>
             </tr>`)
-            response.forEach(element => {
+            response.forEach((element, i) => {
                 $('#table-body').append(` 
                 <tr>
-                     <th scope="row">1</th>
+                     <th scope="row" class="text-center">${i+1}</th>
                      <td>${element.name}</td>
-                     <td>${element.release_dates[0].y}</td>
-                     <td>${element.cover ? element.cover.url.slice(2) : 'cek'}</td>
-                     <td>${element.url}</td>
-                </tr>`);
+                     <td class="text-center">${element.release_dates ? element.release_dates[0].y: '-'}</td>
+                     <td><img src="https://${element.cover ? element.cover.url.slice(2) : '-'}" alt="${element.name}" border=3 height=60 width=60></img></td>
+                     <td class="text-center"><a href="${element.url}" class="btn btn-outline-primary" role="button" aria-pressed="true" target="_blank">Visit Game</a></td>
+                </tr>`)
                  
             });
             })
@@ -352,7 +253,3 @@ function fetchIgdbAPI() {
             console.log(xhr);
         })
 }
-
-=======
->>>>>>> 4e0a55ee0edf149954913e59efd649fc4c2ca875
-
