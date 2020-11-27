@@ -55,7 +55,6 @@ function login() {
         }
     })
         .done(response => {
-            // console.log(response.access_token);
             localStorage.setItem('access_token', response.access_token)
             showMainPage()
         })
@@ -130,8 +129,6 @@ function jokes() {
             </div>
           </div>`)
             showJokes()
-            $("#trivia-list").empty()
-            $("#gotd-content").empty()
         })
 }
 
@@ -199,11 +196,6 @@ function fetchTrivia() {
             </div>
           </div>
             `)
-
-
-            $("#jokes-content").empty()
-            $("#gotd-content").empty()
-
     })
     .fail((xhr, textStatus) => {
         console.log(xhr, textStatus);
@@ -212,7 +204,6 @@ function fetchTrivia() {
 }
 
 function fetchIgdbAPI() {
-    // $('#gotd-content').empty()
     console.log('tes');
     $.ajax({
             url: 'http://localhost:3000/igdbAPI',
@@ -246,8 +237,6 @@ function fetchIgdbAPI() {
                 </tr>
                 `)
             });
-            $("#trivia-list").empty()
-            $("#jokes-content").empty()
             })
         .fail((xhr, textStatus) => {
             console.log(xhr);
