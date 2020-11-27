@@ -15,7 +15,7 @@ $(document).ready(function(){
     });
 
     $("#trivia-btn").on("click", function () {
-        trivia()
+        fetchTrivia()
     });
 
     $("#gotd-btn").on("click", function () {
